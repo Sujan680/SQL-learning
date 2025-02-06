@@ -1,5 +1,6 @@
 
-CREATE DATABASE college;
+CREATE DATABASE college;   
+CREATE DATABASE IF NOT EXISTS college;
 
 USE college;
 
@@ -19,3 +20,11 @@ INSERT INTO student VALUES
 SELECT * FROM student;
 
 insert into student values(4, 'Namita', 23);
+
+DROP DATABASE IF EXISTS Company;
+
+show databases;
+
+show tables;
+
+
