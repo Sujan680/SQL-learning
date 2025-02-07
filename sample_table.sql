@@ -153,7 +153,48 @@ where marks <= 40;
 
 select * from Student_Info;
 
+-- Revisiting Primary key and Foreign key in SQL
+CREATE TABLE dept (
+	id INT PRIMARY KEY,
+    name VARCHAR(50)
+);
 
+INSERT INTO dept 
+values
+(101, 'English'),
+(102, 'Science'),
+(103, 'Nepali');
 
+select * from dept;
+
+UPDATE dept
+SET id = 104
+WHERE id = 103;
+
+DELETE FROM dept
+WHERE id = 102;
+
+CREATE TABLE teacher (
+	id INT PRIMARY KEY,
+    name VARCHAR(50),
+    dept_id INT,
+    FOREIGN KEY (dept_id) REFERENCES dept(id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+-- DROP TABLE teacher;
+
+insert into teacher values
+(1, 'Adam', 101),
+(2, 'Sujan', 102),
+(3, 'Denis', 103);
+
+select * from teacher;
+
+-- Cascading for Foreign key
+-- on update cascade
+-- on delete cascade
+-- when we use this then when we do update or delete it automatically effects on another table
 
 
