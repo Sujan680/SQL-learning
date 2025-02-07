@@ -101,4 +101,59 @@ from Student_Info
 group by grade, name
 having grade = 'C';
 
+-- General Order
+-- Select column(s)
+-- From table_name
+-- Whrere condition
+-- Group By column
+-- Having conditon(s)
+-- Order by column(s) desc;
+
+select city, count(name)
+from Student_Info 
+where grade = 'A' 
+group by city
+having max(marks) > 70
+order by city;
+
+-- query to make safe Updates off: 0 for 'off' and 1 to 'On'
+SEt SQL_SAFE_UPDATES = 0;
+
+-- Table related queries: 
+-- Update
+
+UPDATE Student_Info
+SET grade = "O"
+WHERE grade = "A";
+
+update Student_Info
+set marks = 72
+where marks = 12;
+
+update Student_Info
+set grade = 'B'
+where marks between 70 and 80;
+
+update Student_Info
+set grade = 'A'
+where marks between 80 and 90;
+
+update Student_Info 
+set marks = marks - 3;
+
+update Student_Info
+set marks = 20
+where rollno = 105;
+
+-- Delete command
+
+delete from Student_Info
+where marks <= 40;
+
+
+select * from Student_Info;
+
+
+
+
 
