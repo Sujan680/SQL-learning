@@ -224,4 +224,56 @@ UNION ALL
 SELECT id, name FROM employee;
 
 
+-- SQL Sub Queries:
+-- A subquery or Inner query or a Nested query is a query within another SQL queery.
+-- It involves 2 select statements.
+-- It can be used in (select, where, from);
 
+-- syntax:
+		-- SELECT column(s)
+		-- FROM table_name
+		-- WHERE col_name operator
+		-- (subquery);
+-- get names of all the students who scored more than class average?
+SELECT AVG(marks)
+FROM student_info;
+
+SELECT name, marks
+FROM student_info
+WHERE marks > 85.000;
+
+-- USING subquery methods
+
+SELECT name, marks
+FROM student_info
+WHERE marks > (SELECT AVG(marks) FROM student_info);  
+
+SELECT name, rollno FROM student_info
+where rollno IN (
+	SELECT rollno 
+    FROM student_info
+    WHERE rollno % 2 = 0
+);
+
+
+-- find the max marks from the students of DELHI.
+
+SELECT MAX(marks) 
+FROM (SELECT * FROM student_info WHERE city = 'Delhi') AS temp;
+
+-- OR
+
+SELECT MAX(marks)
+FROM student_info
+WHERE city = "Delhi";
+     
+--- VIEW in sql::
+select * from student_info;
+
+CREATE VIEW view1 AS 
+SELECT rollno, name, marks FROM student_info;
+
+SELECT * FROM view1;	
+
+DROP VIEW view1;
+        
