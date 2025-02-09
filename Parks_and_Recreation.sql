@@ -219,3 +219,103 @@ INNER JOIN employee_salary as e2
 ON e1.employee_id = e2.employee_id
 INNER JOIN parks_departments as pd
 ON e2.dept_id = pd.department_id;
+
+-- Strings Functions
+SELECT first_name, LENGTH(first_name), length(last_name)
+FROM employee_demographics
+ORDER BY 2;
+
+SELECT first_name, UPPER(first_name)
+FROM employee_demographics;
+
+SELECT LOWER(first_name)
+FROM employee_demographics;
+
+-- TRIM , LTRIM, RTRIM function
+SELECT TRIM(first_name), first_name
+FROM employee_demographics;
+
+-- RIGHT, LEFT functions
+SELECT first_name,
+LEFT(first_name, 4),
+RIGHT(last_name, 3)
+FROM employee_demographics;
+
+-- SUBSTRING function
+SELECT first_name,
+SUBSTRING(last_name, 2, 1),
+birth_date,
+SUBSTRING(birth_date, 6, 2) AS month
+FROM employee_demographics;
+
+
+-- REPLACE function
+SELECT first_name, REPLACE(first_name, 'o', 'X')
+FROM employee_demographics;
+
+SELECT first_name, LOCATE('An', first_name)
+FROM employee_demographics;
+
+--- Concat function
+SELECT first_name, last_name,
+CONCAT(first_name, " ", last_name) as full_name
+FROM employee_demographics;
+
+
+-- CASE Statement:
+
+SELECT first_name, last_name, age,
+CASE
+	WHEN age >= 40 THEN 'OLD'
+    WHEN age >=20 and age < 40 THEN 'Adult'
+END as Age_order
+FROM employee_demographics;
+
+SELECT first_name, salary,
+CASE
+	WHEN salary <= 50000 THEN    salary + (salary * 0.05)
+    WHEN salary >= 50000 THEN  salary + (salary * 0.07)
+END as New_Payment,
+CASE
+	WHEN dept_id = 6 THEN salary * .10
+END as Bonus
+FROM employee_salary;
+
+-- Subqueris 
+-- employee who works in only parks_and_recreation department
+-- Using subquries in WHERE 
+SELECT *
+FROM employee_demographics
+WHERE employee_id IN (SELECT employee_id
+						FROM employee_salary WHERE dept_id = 1);
+
+
+-- Using SELECT
+
+SELECT first_name, salary, 
+(SELECT AVG(salary)
+FROM employee_salary)
+FROM employee_salary;
+
+
+-- using within FROM
+
+SELECT gender, 
+AVG(age) as avg_age, 
+MAX(age) as max_age, 
+MIN(age) as min_age, 
+COUNT(age)
+FROM employee_demographics
+GROUP BY gender;
+
+SELECT AVG(max_age)
+FROM
+(SELECT gender, 
+AVG(age) as avg_age, 
+MAX(age) as max_age, 
+MIN(age) as min_age, COUNT(age)
+FROM employee_demographics
+GROUP BY gender) AS agg_table;
+
+
+
