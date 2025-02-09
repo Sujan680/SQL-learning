@@ -317,5 +317,32 @@ MIN(age) as min_age, COUNT(age)
 FROM employee_demographics
 GROUP BY gender) AS agg_table;
 
+-- Window functions
 
+Select gender, AVG(salary) AS Avg_salary
+from employee_demographics as ed
+JOIN employee_salary as es
+ON ed.employee_id = es.employee_id
+group by gender;
 
+Select ed.first_name, ed.last_name, gender, AVG(salary) OVER(partition by gender)
+from employee_demographics as ed
+JOIN employee_salary as es
+ON ed.employee_id = es.employee_id;
+
+Select ed.first_name, ed.last_name, gender, SUM(salary) 
+OVER(partition by gender order by ed.employee_id) as Rolling_Table
+from employee_demographics as ed
+JOIN employee_salary as es
+ON ed.employee_id = es.employee_id;
+
+-- ROW_NUMBER()--unique ranking , RANK() -- duplicate rank like(4,4) then start at 6 position, 
+-- DENSE_RANK()-- duplicate rank and start next like (4,4) then 6
+
+Select ed.first_name, ed.last_name, gender, es.salary,
+ROW_NUMBER() OVER(PARTITION BY gender ORDER BY salary DESC) AS row_num,
+RANK() OVER(PARTITION BY gender ORDER BY salary DESC) as rank_num,
+DENSE_RANK() OVER(PARTITION BY gender ORDER BY salary DESC) as dense_rank_num
+from employee_demographics as ed
+JOIN employee_salary as es
+ON ed.employee_id = es.employee_id;
