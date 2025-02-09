@@ -313,7 +313,8 @@ FROM
 (SELECT gender, 
 AVG(age) as avg_age, 
 MAX(age) as max_age, 
-MIN(age) as min_age, COUNT(age)
+MIN(age) as min_age, 
+COUNT(age) as count_age
 FROM employee_demographics
 GROUP BY gender) AS agg_table;
 
@@ -346,3 +347,53 @@ DENSE_RANK() OVER(PARTITION BY gender ORDER BY salary DESC) as dense_rank_num
 from employee_demographics as ed
 JOIN employee_salary as es
 ON ed.employee_id = es.employee_id;
+
+
+
+-- CTEs
+
+WITH CTE_Example (Gender, AVG_Sal, MAX_Sal, MIN_Sal, COUNT_Sal) AS
+(SELECT gender, 
+AVG(salary) as avg_sal, 
+MAX(salary) as max_sal, 
+MIN(salary) as min_sal, 
+COUNT(salary) as count_sal
+FROM employee_demographics as ed
+JOIN employee_salary as es
+ON ed.employee_id = es.employee_id
+ GROUP BY gender
+ )
+SELECT AVG(avg_sal)
+FROM CTE_Example
+;
+
+WITH CTE_Example1 AS
+(SELECT employee_id, last_name, age
+FROM employee_demographics
+WHERE age > 35
+),
+CTE_Example2 AS 
+(SELECT employee_id, salary, occupation
+FROM employee_salary
+WHERE salary > 55000
+)
+SELECT * 
+FROM CTE_Example1
+JOIN CTE_Example2
+	ON CTE_Example1.employee_id = CTE_Example2.employee_id
+;
+
+WITH CTE_Example (Gender, AVG_Sal, MAX_Sal, MIN_Sal, COUNT_Sal) AS
+(SELECT gender, 
+AVG(salary) as avg_sal, 
+MAX(salary) as max_sal, 
+MIN(salary) as min_sal, 
+COUNT(salary) as count_sal
+FROM employee_demographics as ed
+JOIN employee_salary as es
+ON ed.employee_id = es.employee_id
+ GROUP BY gender
+ )
+SELECT *
+FROM CTE_Example
+;
