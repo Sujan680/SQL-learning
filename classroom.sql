@@ -62,7 +62,7 @@ CREATE TABLE Employee_Info
 (
 	id INT PRIMARY KEY,
     name VARCHAR(50),
-    salary INT
+    salary INT DEFAULT 10000
 );
 
 INSERT INTO Employee_Info
@@ -73,6 +73,17 @@ VALUES
 (3, "Casey", 40000);
 
 SELECT * FROM Employee_Info;
+
+-- constraints in sql
+-- Default constraint:
+	INSERT INTO Employee_Info (id, name) VALUES (4, "Ram");
+    
+    -- CHECK Constraints: it can limit the values allowed in a column
+    CREATE TABLE city (
+		id INT PRIMARY KEY,
+        city VARCHAR(40),
+        age INT CHECK (age >= 16)
+    );
 
 
 
