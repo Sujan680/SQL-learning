@@ -9,7 +9,7 @@ CREATE TABLE employee_demographics (
 	employee_id INT NOT NULL,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
-    age INT NOT NULL,
+    age INT,
     gender VARCHAR(10),
     birth_date DATE,
     PRIMARY KEY(employee_id)
@@ -397,3 +397,132 @@ ON ed.employee_id = es.employee_id
 SELECT *
 FROM CTE_Example
 ;
+
+-- Revision:- CTEs: Common Table Expressions
+-- A CTE is a temporary result set that you can reference within a SELECT, INSERT, 
+-- UPDATE, or DELETE statement. It is defined using the WITH clause and exists only 
+-- during the execution of the query
+
+WITH CTE_Example3 AS
+(
+	SELECT d.employee_id, d.first_name, s.occupation
+    FROM employee_demographics d
+    JOIN employee_salary s
+    ON d.employee_id = s.employee_id
+)
+SELECT *
+FROM CTE_Example3
+;
+
+
+-- Temporary Tables
+
+CREATE TEMPORARY TABLE temp_table
+(
+	first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    favorite_movie VARCHAR(100)
+);
+
+SELECT *
+FROM temp_table;
+
+DELETE FROM temp_table
+WHERE favorite_movie = 'The Great T';
+
+INSERT INTO temp_table
+VALUES ('Sujan', 'Magar', 'The Great Time');
+
+-- we can also create temp table using the existing table 
+-- temp table exist as long as we are in the same session
+CREATE TEMPORARY TABLE salary_over_50K
+SELECT *
+FROM employee_salary
+WHERE salary >= 50000;
+
+SELECT *
+FROM salary_over_50K;
+
+-- Stored Procedures
+
+-- simple example of creating stored procedure
+CREATE PROCEDURE large_salaries()
+SELECT *
+FROM employee_salary
+WHERE salary >= 50000;
+
+-- calling the stored procedure
+CALL large_salaries();
+
+-- Another example
+
+DELIMITER $$
+CREATE PROCEDURE large_salaries2()
+BEGIN
+	SELECT * 
+    FROM employee_salary
+    WHERE salary >= 50000;
+    SELECT *
+    FROM employee_salary
+    WHERE salary >= 10000;
+END $$
+DELIMITER ;
+
+-- Using Parameters in stored procedures
+DELIMITER $$
+CREATE PROCEDURE large_salaries3(employee_id_param INT)
+BEGIN
+	SELECT salary
+    FROM employee_salary
+    WHERE employee_id = employee_id_param;
+END $$
+DELIMITER ;
+
+CALL large_salaries3(1);
+
+
+-- Triggers and Events
+
+
+DELIMITER $$
+CREATE TRIGGER employee_insert
+	AFTER INSERT ON employee_salary
+    FOR EACH ROW
+BEGIN
+	INSERT INTO employee_demographics (employee_id, first_name, last_name)
+    VALUES (NEW.employee_id, NEW.first_name, NEW.last_name);
+END $$
+DELIMITER ;
+
+INSERT INTO employee_salary
+(employee_id, first_name, last_name, occupation, salary, dept_id)
+VALUES (13, 'Jean-Ralpho', 'Saperstein', 'Entertainment', 100000, 30);
+
+ALTER TABLE employee_demographics 
+MODIFY COLUMN age INT NULL;
+
+SELECT * FROM 
+employee_salary;
+
+DELETE FROM employee_salary
+where employee_id = 16;
+
+SELECT * FROM 
+employee_demographics;
+
+-- Events
+DELIMITER $$
+CREATE EVENT delete_retirees1
+ON SCHEDULE EVERY 30 second
+DO
+BEGIN
+	DELETE 
+    FROM employee_demographics
+    WHERE age >= 60 ;
+END $$
+DELIMITER ;
+
+SELECT * 
+FROM employee_demographics;
+
+
