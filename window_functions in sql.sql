@@ -1,4 +1,19 @@
 -- Windows functions
+/*
+Window functions are advanced SQL operations that perform calculations across a set of table 
+rows related to the current row, without collapsing the result set like GROUP BY does.
+
+Key Characteristics of Window Functions:
+Preservation of Rows: Unlike aggregate functions with GROUP BY, window functions 
+						don't reduce the number of rows returned.
+
+Partitioning: Calculations can be performed within defined groups (partitions) of data.
+
+Ordering: Functions can consider the order of rows within partitions.
+
+Frame Specification: Define exactly which rows to include in the calculation relative 
+					to the current row.
+*/
 -- Comparing the group by and window function
 
 -- by group by
@@ -29,7 +44,7 @@ JOIN
 	employee_salary sal
 ON dem.employee_id = sal.employee_id;
 
--- Rolling total Calculation
+-- Running total Calculation
 SELECT 
 	dem.first_name,
     dem.last_name,
